@@ -4,19 +4,33 @@ import SteakInput from './components/SteakInput';
 import SteakList from './components/SteakList';
 
 export default function App() {
+  const [modalIsVisible, setModalIsVisable] = useState(false);
   const [steaks, setSteaks] = useState([]);
+
+  function startAddSteakHandler() {
+    setModalIsVisable(true);
+  }
+
+  function endAddSteakHandler() {
+    setModalIsVisable(false);
+  }
 
   return (
     <View style={styles.appContainer}>
-      <SteakInput
-        setSteaks={setSteaks}
-      >
-      </SteakInput>
+      {modalIsVisible && 
+        <SteakInput 
+          setSteaks={setSteaks}
+          visible={modalIsVisible}
+          endAddSteakHandler={endAddSteakHandler}
+        >
+        </SteakInput>
+      }
       <SteakList 
         steaks={steaks}
         setSteaks={setSteaks}
       >
       </SteakList>
+      <Button title='Add New Steak' onPress={startAddSteakHandler}></Button>
     </View>
   );
 }
