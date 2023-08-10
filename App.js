@@ -13,6 +13,7 @@ export default function App() {
 
   function endAddSteakHandler() {
     setModalIsVisable(false);
+    console.log(steaks)
   }
 
   return (

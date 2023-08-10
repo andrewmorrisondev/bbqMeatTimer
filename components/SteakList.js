@@ -4,7 +4,11 @@ function SteakList({ steaks, setSteaks }) {
   return (
     <View>
       <View style={styles.steakList}>
-        {steaks.map((steak) => <Text key={steak}>{steak}</Text>)}
+        {steaks.map((steak, index) => 
+          <View style={styles.steakShow} key={index}>
+            <Text>Name: {steak.name}, Temperature: {steak.temperature}, Thickness: {steak.thickness}</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -12,4 +16,6 @@ function SteakList({ steaks, setSteaks }) {
 
 export default SteakList;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+
+});

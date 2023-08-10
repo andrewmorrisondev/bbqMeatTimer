@@ -1,16 +1,24 @@
 import { useState } from 'react';
-import { RadioButton } from 'react-native-paper';
 import { StyleSheet, Button, Text, TextInput, View, Modal } from 'react-native';
+import TemperatureRadio from './TemperatureRadio';
+import ThicknessRadio from './ThicknessRadio';
 
 function SteakInput({ setSteaks, visible, endAddSteakHandler }) {
-  const [enteredSteakText, setEnteredSteakText] = useState('');
-  const [checked, setChecked] = useState('')
+  const [enteredSteakText, setEnteredSteakText] = useState('')
+  const [checkedThickness, setCheckedThickness] = useState('')
+  const [checkedTemperature, setCheckedTemperature] = useState('')
 
   function steakInputHandler(enteredText) {
     setEnteredSteakText(enteredText);
   }
   function addSteakHandler() {
-    setSteaks(currentSteaks => [...currentSteaks, enteredSteakText])
+    const steakData = {
+      name: enteredSteakText,
+      temperature: checkedTemperature,
+      thickness: checkedThickness,
+    }
+
+    setSteaks(currentSteaks => [...currentSteaks, steakData])
     endAddSteakHandler();
   }
 
@@ -21,32 +29,14 @@ function SteakInput({ setSteaks, visible, endAddSteakHandler }) {
         placeholder='Steak Eater'
         onChangeText={steakInputHandler}
       />
-      <View style={styles.radioButtonContainer}>
-        <View style={styles.radioButton}>
-          <RadioButton
-            value="rare"
-            status={checked === 'rare' ? 'checked' : 'unchecked'}
-            onPress={() => setChecked('rare')}
-            />
-            <Text style={styles.text}>Rare</Text>
-        </View>
-        <View style={styles.radioButton}>
-          <RadioButton
-            value="medium"
-            status={checked === 'medium' ? 'checked' : 'unchecked'}
-            onPress={() => setChecked('medium')}
-            />
-            <Text style={styles.text}>Medium</Text>
-        </View>
-        <View style={styles.radioButton}>
-          <RadioButton
-            value="well"
-            status={checked === 'well' ? 'checked' : 'unchecked'}
-            onPress={() => setChecked('well')}
-            />
-            <Text style={styles.text}>Well Done</Text>
-        </View>
-      </View>
+      <TemperatureRadio 
+        checkedTemperature={checkedTemperature} 
+        setCheckedTemperature={setCheckedTemperature}
+      />
+      <ThicknessRadio 
+        checkedThickness={checkedThickness} 
+        setCheckedThickness={setCheckedThickness}
+      />
       <Button title='Add Steak' onPress={addSteakHandler} />
     </View>
   </Modal>
