@@ -1,4 +1,4 @@
-const cookData = {
+export const cookData = {
   'rare': {
     0.75: [4, 2],
     1: [5, 3],

@@ -2,29 +2,75 @@ import { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import SteakInput from './components/SteakInput';
 import SteakList from './components/SteakList';
+import TimerScreen from './components/TimerScreen';
+
+import { cookData } from './helpers/cookData';
 
 export default function App() {
-  const [modalIsVisible, setModalIsVisable] = useState(false);
-  const [steaks, setSteaks] = useState([]);
+  const [inputModalIsVisible, setInputModalIsVisible] = useState(false)
+  const [timerModalIsVisible, setTimerModalIsVisible] = useState(false)
+  const [steaks, setSteaks] = useState([])
+  const [totalDuration, setTotalDuration] = useState(0)
 
   function startAddSteakHandler() {
-    setModalIsVisable(true);
+    setInputModalIsVisible(true)
   }
 
   function endAddSteakHandler() {
-    setModalIsVisable(false);
-    console.log(steaks)
+    setInputModalIsVisible(false)
+  }
+  
+  function deleteSteakHandler() {
+    setSteaks([])
+  }
+
+  function setTimer() {
+    if (steaks.length === 0) {
+      console.log("No steaks added.")
+      return
+    }
+
+    const selectedSteak = steaks[0]
+    const temperatureKey = selectedSteak.temperature
+    const thicknessKey = selectedSteak.thickness
+
+    if (!(temperatureKey in cookData) || !(thicknessKey in cookData[temperatureKey])) {
+      console.log("Cook data not found for selected steak.")
+      return;
+    }
+
+    const [firstCook, secondCook] = cookData[temperatureKey][thicknessKey]
+    const totalTime = (firstCook + secondCook) * 60
+    setTotalDuration(totalTime)
+    setTimerModalIsVisible(true)
+  }
+
+  function beginTimerHandler() {
+    setTimer()
+    setTimerModalIsVisible(true)
+  }
+
+  function endTimerHandler() {
+    setTimerModalIsVisible(false)
   }
 
   return (
     <View style={styles.appContainer}>
-      {modalIsVisible && 
+      {inputModalIsVisible && 
         <SteakInput 
           setSteaks={setSteaks}
-          visible={modalIsVisible}
+          visible={inputModalIsVisible}
           endAddSteakHandler={endAddSteakHandler}
         >
         </SteakInput>
+      }
+      {timerModalIsVisible && 
+        <TimerScreen
+          visible={timerModalIsVisible}
+          endTimerHandler={endTimerHandler}
+          totalDuration={totalDuration}
+        >
+        </TimerScreen>
       }
       <SteakList 
         steaks={steaks}
@@ -32,6 +78,14 @@ export default function App() {
       >
       </SteakList>
       <Button title='Add New Steak' onPress={startAddSteakHandler}></Button>
+      <Button title='Begin Timer' onPress={beginTimerHandler}></Button>
+      <View style={styles.deleteButtonContainer}>
+        <Button
+          title='Cancel'
+          onPress={deleteSteakHandler}
+          color='red'
+        />
+      </View>
     </View>
   );
 }
@@ -43,5 +97,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     justiufyContent: 'space-between',
+  },
+  deleteButtonContainer: {
+    color: 'red',
+    marginTop: 10,
   }
-});
+})

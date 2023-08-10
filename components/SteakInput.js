@@ -19,6 +19,7 @@ function SteakInput({ setSteaks, visible, endAddSteakHandler }) {
     }
 
     setSteaks(currentSteaks => [...currentSteaks, steakData])
+    console.log(steakData)
     endAddSteakHandler();
   }
 
