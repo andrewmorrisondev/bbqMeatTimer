@@ -33,7 +33,7 @@ function TimerScreen({visible, endTimerHandler, totalDuration}) {
   )
 }
 
-export default TimerScreen;
+export default TimerScreen
 
 const styles = StyleSheet.create({
   container: {
