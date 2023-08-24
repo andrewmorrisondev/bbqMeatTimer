@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, Button, Text, TextInput, View, Modal } from 'react-native';
-import TemperatureRadio from './TemperatureRadio';
-import ThicknessRadio from './ThicknessRadio';
+import TemperaturePicker from './TemperaturePicker';
+import ThicknessPicker from './ThicknessPicker';
 
 function SteakInput({ setSteaks, visible, endAddSteakHandler }) {
   const [enteredSteakText, setEnteredSteakText] = useState('')
@@ -30,11 +30,11 @@ function SteakInput({ setSteaks, visible, endAddSteakHandler }) {
         placeholder='Steak Eater'
         onChangeText={steakInputHandler}
       />
-      <TemperatureRadio 
+      <TemperaturePicker 
         checkedTemperature={checkedTemperature} 
         setCheckedTemperature={setCheckedTemperature}
       />
-      <ThicknessRadio 
+      <ThicknessPicker 
         checkedThickness={checkedThickness} 
         setCheckedThickness={setCheckedThickness}
       />

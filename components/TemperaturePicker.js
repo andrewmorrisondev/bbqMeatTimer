@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker'
 
-function TemperatureRadio({checkedTemperature, setCheckedTemperature}) {
+function TemperaturePicker({checkedTemperature, setCheckedTemperature}) {
 
   return (
     <Picker
@@ -17,6 +17,6 @@ function TemperatureRadio({checkedTemperature, setCheckedTemperature}) {
   )
 }
 
-export default TemperatureRadio;
+export default TemperaturePicker;
 
 const styles = StyleSheet.create({});

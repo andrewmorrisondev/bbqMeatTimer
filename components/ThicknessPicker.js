@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker'
 
-function ThicknessRadio({checkedThickness, setCheckedThickness}) {
+function ThicknessPicker({checkedThickness, setCheckedThickness}) {
 
   return (
     <Picker
@@ -17,6 +17,6 @@ function ThicknessRadio({checkedThickness, setCheckedThickness}) {
   )
 }
 
-export default ThicknessRadio;
+export default ThicknessPicker;
 
 const styles = StyleSheet.create({});
