@@ -45,7 +45,21 @@ export default function App() {
     setTimerModalIsVisible(true)
   }
 
+  function timerConstructor(steaks) {
+    const cookTimes = {}
+    steaks.forEach(steak => {
+      const temp = steak.temperature
+      const thick = steak.thickness
+      const name = steak.name
+      const cookTime = cookData[temp][thick]
+  
+      cookTimes[name] = cookTime
+    })
+    console.log(cookTimes)
+  }
+
   function beginTimerHandler() {
+    timerConstructor(steaks)
     setTimer()
     setTimerModalIsVisible(true)
   }
