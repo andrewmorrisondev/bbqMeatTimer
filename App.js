@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 import SteakInput from './components/SteakInput';
 import SteakList from './components/SteakList';
 import TimerScreen from './components/TimerScreen';
@@ -11,6 +11,10 @@ export default function App() {
   const [timerModalIsVisible, setTimerModalIsVisible] = useState(false)
   const [steaks, setSteaks] = useState([])
   const [totalDuration, setTotalDuration] = useState(0)
+
+  const cookTimes = {}
+  const landmarks = {}
+  let longestTime = 0
 
   function startAddSteakHandler() {
     setInputModalIsVisible(true)
@@ -25,41 +29,35 @@ export default function App() {
   }
 
   function setTimer() {
-    if (steaks.length === 0) {
-      console.log("No steaks added.")
-      return
-    }
-
-    const selectedSteak = steaks[0]
-    const temperatureKey = selectedSteak.temperature
-    const thicknessKey = selectedSteak.thickness
-
-    if (!(temperatureKey in cookData) || !(thicknessKey in cookData[temperatureKey])) {
-      console.log("Cook data not found for selected steak.")
-      return;
-    }
-
-    const [firstCook, secondCook] = cookData[temperatureKey][thicknessKey]
-    const totalTime = (firstCook + secondCook) * 60
-    setTotalDuration(totalTime)
+    cookTimeConstructor(steaks)
+    landmarkConstructor(cookTimes)
     setTimerModalIsVisible(true)
   }
 
-  function timerConstructor(steaks) {
-    const cookTimes = {}
+  function cookTimeConstructor(steaks) {
     steaks.forEach(steak => {
       const temp = steak.temperature
       const thick = steak.thickness
       const name = steak.name
       const cookTime = cookData[temp][thick]
-  
       cookTimes[name] = cookTime
     })
-    console.log(cookTimes)
+    for (const key in cookTimes) {
+      if (longestTime < cookTimes[key][0] + cookTimes[key][1]) {
+        longestTime = cookTimes[key][0] + cookTimes[key][1]
+      }
+    }
+    setTotalDuration(longestTime * 60)
+  }
+
+  function landmarkConstructor(cookTimes) {
+    for (const key in cookTimes) {
+      landmarks[key + 'On'] = (longestTime - cookTimes[key][0] - cookTimes[key][1])
+      landmarks[key + 'Flip'] = (longestTime - cookTimes[key][1])
+    }
   }
 
   function beginTimerHandler() {
-    timerConstructor(steaks)
     setTimer()
     setTimerModalIsVisible(true)
   }
@@ -83,6 +81,7 @@ export default function App() {
           visible={timerModalIsVisible}
           endTimerHandler={endTimerHandler}
           totalDuration={totalDuration}
+          landmarks={landmarks}
         >
         </TimerScreen>
       }

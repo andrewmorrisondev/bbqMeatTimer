@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Modal } from 'react-native'
 
-function TimerScreen({visible, endTimerHandler, totalDuration}) {
-  const initialDuration = totalDuration
-  const [timer, setTimer] = useState(initialDuration)
+function TimerScreen({visible, endTimerHandler, totalDuration, landmarks}) {
+  const [timer, setTimer] = useState(totalDuration)
+
+  let nextLandmark = landmarks
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,5 +44,8 @@ const styles = StyleSheet.create({
   },
   timerText: {
     fontSize: 48,
+  },
+  nextLandmark: {
+    fontSize: 28,
   },
 });
